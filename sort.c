@@ -12,7 +12,8 @@ int main(int argc, char **argv){
 	int size;
 	int *set;
 	size = atoi(argv[1]);
-	srand(time(NULL));
+	//srand(time(NULL));
+	srand(5);
 	set = frank_n_moix_shuffle(size);
 	print_set(set);
 	printf("%f\n",insertion_sort(set));
@@ -28,10 +29,20 @@ int main(int argc, char **argv){
 	printf("%f\n",quicksort(set,0,get_size(set)-1,NULL));
 	print_set(set);
 	free(set);
+	set = frank_n_moix_shuffle(size);
+	print_set(set);
+	printf("%f\n",intelligent_design_sort(set));
+	print_set(set);
+	free(set);
 	//print_set(set);
 	
 	
 	return 1;
+}
+
+double intelligent_design_sort(int *set){
+	printf("Number of swaps:	0\n");
+	return 0;
 }
 
 int partition(int *set, int l, int r, int *swaps){
@@ -61,12 +72,14 @@ double quicksort(int *set, int l, int r, int *swaps){
 		swaps = &swaps_val;
 	}
 
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&start);
+	//clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&start);
+	clock_gettime(CLOCK_MONOTONIC_RAW,&start);
 	if(r <= l) return 0;
 	i=partition(set,l,r, swaps);
 	quicksort(set,l,i-1, swaps);
 	quicksort(set,i+1,r, swaps);
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&end);
+	//clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&end);
+	clock_gettime(CLOCK_MONOTONIC_RAW,&end);
 	if(swaps_val!=0)printf("Swaps Needed:\t%d\n",swaps_val);
 	time = end.tv_nsec-start.tv_nsec;
 	return time;
@@ -118,17 +131,19 @@ double insertion_sort(int *set){
 	swaps = 0;
 
 	size = get_size(set);
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&start);
+	//clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&start);
+	clock_gettime(CLOCK_MONOTONIC_RAW,&start);
 
 	for(i=0; i<size; i++){
 		val = set[i];
 		for(j=i; j>0 && set[j-1]>val; j--){
 			set[j] = set[j-1];
-			swaps++;
 		}
 		set[j] = val;
+		swaps++;
 	}
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&end);
+	//clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&end);
+	clock_gettime(CLOCK_MONOTONIC_RAW,&end);
 	printf("Swaps Needed:\t%d\n",swaps);
 	time = end.tv_nsec-start.tv_nsec;
 	return time;
@@ -146,7 +161,8 @@ double selection_sort(int *set){
 	swaps = 0;
 
 	size = get_size(set);
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&start);
+	//clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&start);
+	clock_gettime(CLOCK_MONOTONIC_RAW,&start);
 
 	for(i=0; i<(size-1); i++){
 		jmin = i;
@@ -161,7 +177,8 @@ double selection_sort(int *set){
 		}
 	}
 
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&end);
+	//clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&end);
+	clock_gettime(CLOCK_MONOTONIC_RAW,&end);
 	printf("Swaps Needed:\t%d\n",swaps);
 	time = end.tv_nsec-start.tv_nsec;
 	return time;

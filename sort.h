@@ -8,3 +8,4 @@ double insertion_sort(int *set);
 inline void swap(register int a, register int b, register int *set);
 int partition(int *set, int l, int r, int *swaps);
 double quicksort(int *set, int l, int r, int *swaps);
+double intelligent_design_sort(int *set);
