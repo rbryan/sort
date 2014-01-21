@@ -2,15 +2,15 @@
 
 CC=gcc
 CFLAGS= -g -O3 -Wall
-LFLAGS=
+LFLAGS= -lrt -lm
 
 BUILD = $(CC) $(CFLAGS)
 
 sort: sort.c sort.h
-	$(BUILD) sort.c -o sort
+	$(BUILD) sort.c -o sort $(LFLAGS)
 
 clean:
-	rm *.o;
 	rm sort;
+	rm *.o;
 
 
