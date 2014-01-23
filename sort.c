@@ -34,10 +34,111 @@ int main(int argc, char **argv){
 	printf("%f\n",intelligent_design_sort(set));
 	print_set(set);
 	free(set);
+	set = frank_n_moix_shuffle(size);
+	print_set(set);
+	heap_sort(set);
+	print_set(set);
+	free(set);
+	
+	set = frank_n_moix_shuffle(size);
+	print_set(set);
+	merge_sort(set);
+	print_set(set);
+	free(set);
 	//print_set(set);
 	
 	
 	return 1;
+}
+
+void merge(	int *set,
+	       	int left_start,
+	       	int left_end,
+	       	int right_start,
+	       	int right_end){
+
+	int left_length = left_end - left_start;
+	int right_length = right_end - right_start;
+	int left_half[left_length];
+	int right_half[right_length];
+			 
+	int r = 0; 
+	int l = 0; 
+	int i = 0; 
+			 
+	for (i = left_start; i < left_end; i++, l++){
+		left_half[l] = set[i];
+	}
+	for (i = right_start; i < right_end; i++, r++){
+		right_half[r] = set[i];
+	}									 
+	for ( i = left_start, r = 0, l = 0; l < left_length && r < right_length; i++){
+		if(left_half[l] < right_half[r]){
+		       set[i] = left_half[l++];
+	       	}else{ 
+			set[i] = right_half[r++];
+	       	}
+	}
+											 
+	for(; l < left_length; i++, l++){ 
+		set[i] = left_half[l]; 
+	}
+	for(; r < right_length; i++, r++){
+	       	set[i] = right_half[r]; 
+	}
+}
+ 
+void mergesort_work(int left, int right, int *set){
+	if (right - left <= 1)
+				{
+		return;
+	}
+		 
+	int left_start  = left;
+	int left_end    = (left+right)/2;
+	int right_start = left_end;
+	int right_end   = right;
+						 
+	mergesort_work( left_start, left_end, set);
+	mergesort_work( right_start, right_end, set);
+								 
+	merge(set, left_start, left_end, right_start, right_end);
+}
+ 
+void merge_sort(int *set){
+	mergesort_work(0, get_size(set), set);
+}
+
+void heap_sort( int *a){	
+	int count;
+	int start, end;
+	count = get_size(a);
+	     
+        for(start = (count-2)/2; start >=0; start--){
+	        sift_down( a, start, count);
+	}
+		 
+	for(end=count-1; end > 0; end--){
+		swap(end,0,a);
+		sift_down(a, 0, end);
+	}
+}
+ 
+void sift_down( int *a, int start, int end){
+	int root = start;
+	     
+        while(root*2+1 < end){
+		int child = 2*root + 1;
+	        if((child + 1 < end) && LESS(a[child],a[child+1])){
+			child += 1;
+		}
+		if (LESS(a[root], a[child])){
+			swap(child,root,a);
+			root = child;
+	        }else{
+			return;
+		}
+							    }
 }
 
 double intelligent_design_sort(int *set){
